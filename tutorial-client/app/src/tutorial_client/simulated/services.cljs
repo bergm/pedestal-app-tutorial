@@ -23,4 +23,6 @@
 
 (defn services-fn [message input-queue]
   (.log js/console (str "Sending message to server: " message)))
+
+
 
