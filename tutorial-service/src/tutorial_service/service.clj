@@ -65,7 +65,8 @@
 (definterceptor session-interceptor
   (middlewares/session {:store (cookie/cookie-store)}))
 
-(defn publish
+;; tutorial part 1
+#_(defn publish
   "Publish a message to all other connected clients."
   [{msg-data :edn-params :as request}]
   (log/info :message "received message"
@@ -79,6 +80,20 @@
                                           [:io.pedestal.app.messages/topic]
                                           conj
                                           (subs session-id 0 8)))))
+  (ring-resp/response ""))
+
+;; tutorial part 2
+(defn publish
+  "Publish a message to all other connected clients."
+  [{msg-data :edn-params :as request}]
+  (log/info :message "received message"
+            :request request
+            :msg-data msg-data)
+  (let [session-id (or (session-from-request request)
+                       (session-id))]
+    (notify-all-others session-id
+                       "msg"
+                       (pr-str msg-data)))
   (ring-resp/response ""))
 
 (defn about-page
@@ -125,4 +140,6 @@
               ;;::bootstrap/host "localhost"
               ::bootstrap/type :jetty
               ::bootstrap/port 8080})
+
+
 
