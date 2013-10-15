@@ -213,3 +213,5 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+/tutorial-client/.lein-failures
+/tutorial-service/resources
